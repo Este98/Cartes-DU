@@ -29,12 +29,8 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if not tc:IsRelateToEffect(e) then return end
 	local b1=Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and tc:IsCanBeSpecialSummoned(e,0,tp,false,false)
-	local op=0
 	Duel.Hint(HINT_SELECTMSG,tp,0)
 	if b1 then
-		op=Duel.SelectOption(tp,aux.Stringid(id,1))
-	else return end
-	if op==0 then
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
