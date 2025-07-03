@@ -15,7 +15,7 @@ function s.initial_effect(c)
 end
 s.listed_series={SET_SCRAP}
 function s.spfilter(c,e,tp)
-	return c:IsLevelBelow(4) and c:IsSetCard(SET_SCRAP) and (c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsLevelBelow(4) and c:IsSetCard(SET_SCRAP) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc,e,tp) end
