@@ -8,7 +8,7 @@ Je ne possède aucun artwork utilisé pour les cartes.
 ## Installation des cartes custom
 
 Pour obtenir les cartes, il faut d'abord installer le fichier de configuration.
-Ce fichier se nomme ``user_configs.json`` et se trouvera dans ``` .../ProjectIgnis/config```
+Ce fichier se nomme ``user_configs.json`` et se trouvera dans ```.../ProjectIgnis/config```
 
 ### 1er cas : Pas de fichier déjà installé
 
@@ -40,5 +40,6 @@ Et voilà. Si tout est bien fait, cette étape est terminée. Vous pouvez passer
 TODO
 
 </p>
+</details>
 
 ## Utiliser les cartes custom
