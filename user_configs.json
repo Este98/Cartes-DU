@@ -1,0 +1,11 @@
+{
+   "repos": [
+      {
+         "url": "https://github.com/Este98/Cartes-DU",
+         "repo_name": "Duel University Custom Card",
+         "repo_path": "./repositories/Duel University",
+         "should_update": true,
+         "should_read": true
+      }
+	]
+}
