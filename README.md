@@ -12,7 +12,7 @@ Ce fichier se nomme ``user_configs.json`` et se trouvera dans ```.../ProjectIgni
 
 ### 1er cas : Pas de fichier déjà installé
 
-Si vous ne possédez pas encore le fichier, vous pouvez le télécharger [**ICI**](https://downgit.github.io/#/home?url=https://github.com/Este98/Cartes-DU/blob/asset/user_configs.json), ou bien le créer vous même.
+Si vous ne possédez pas encore le fichier, vous pouvez télécharger l'archive[__**ICI**__](https://downgit.github.io/#/home?url=https://github.com/Este98/Cartes-DU/blob/asset/user_configs.json) (le fichier se trouve à l'intérieur), ou bien le créer vous-même.
 Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 ```json
 {
@@ -48,5 +48,10 @@ TODO
 </p>
 </details>
 
-## Utiliser les cartes custom
+## Utiliser les cartes custom en duel
 
+Dans un premier temps, il faut aller télécharger le [__client Zerotier__](https://www.zerotier.com/download/). Une fois fait, lancez l'installation. Vous devriez maintenant voir cette icône dans votr barre des tâches :
+
+<p align="center">
+<img src= "https://github.com/Este98/Cartes-DU/blob/asset/zerotier_icone.jpg">
+</p>
