@@ -12,14 +12,14 @@ Ce fichier se nomme ``user_configs.json`` et se trouvera dans ```.../ProjectIgni
 
 ### 1er cas : Pas de fichier déjà installé
 
-Si vous ne possédez pas encore le fichier, vous pouvez le télécharger [**ICI**](https://drive.google.com/file/d/1GC1vScvBaAPDsibMUON1Yi5CTUG6EdOn/view?usp=drive_link), ou bien le créer vous même.
+Si vous ne possédez pas encore le fichier, vous pouvez le télécharger [**ICI**](https://downgit.github.io/#/home?url=https://github.com/Este98/Cartes-DU/blob/asset/user_configs.json), ou bien le créer vous même.
 Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 ```json
 {
    "repos": [
       {
          "url": "https://github.com/Este98/Cartes-DU",
-         "repo_name": "Duel University Custom Card",
+         "repo_name": "Duel University Custom Cards",
          "repo_path": "./repositories/Duel University",
          "should_update": true,
          "should_read": true
