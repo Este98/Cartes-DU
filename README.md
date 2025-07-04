@@ -12,7 +12,7 @@ Ce fichier se nomme ``user_configs.json`` et se trouvera dans ```.../ProjectIgni
 
 ### 1er cas : Pas de fichier déjà installé
 
-Si vous ne possédez pas encore le fichier, vous pouvez télécharger l'archive[__**ICI**__](https://downgit.github.io/#/home?url=https://github.com/Este98/Cartes-DU/blob/asset/user_configs.json) (le fichier se trouve à l'intérieur), ou bien le créer vous-même.
+Si vous ne possédez pas encore le fichier, vous pouvez télécharger l'archive [__ICI__](https://downgit.github.io/#/home?url=https://github.com/Este98/Cartes-DU/blob/asset/user_configs.json) (le fichier se trouve à l'intérieur), ou bien le créer vous-même.
 Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 ```json
 {
@@ -55,3 +55,17 @@ Dans un premier temps, il faut aller télécharger le [__client Zerotier__](http
 <p align="center">
 <img src= "https://github.com/Este98/Cartes-DU/blob/asset/zerotier_icone.jpg">
 </p>
+
+Cliquez dessus, et cette petite fenêtre va s'afficher :
+
+<p align="center">
+<img src="https://github.com/Este98/Cartes-DU/blob/asset/zerotier_windows.jpg">
+</p>
+
+La flèche rouge indique votre adresse par lequel le réseau va vous identifier. Pour les membres du serveur **Duel University**, merci d'envoyer cette adress en mp à Este à des fins de gestion.
+
+Ensuite, cliquez sur la flèche jaune, "Join New Network", pour rejoindre le réseau virtuel.
+Pour les membres de la **Duel University**, l'adresse à rentrer se trouve sur le Discord.
+
+Si tout s'est bien passé, félicitations, vous êtes connecté !
+Il ne vous reste plus qu'à lancer Edopro, dans **Local + AI** et d'host une partie, et votre adversaire pourra cliquer sur "Refresh" pour vous trouver.
