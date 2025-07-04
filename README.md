@@ -12,7 +12,7 @@ Ce fichier se nomme ``user_configs.json`` et se trouvera dans ```.../ProjectIgni
 
 ### 1er cas : Pas de fichier déjà installé
 
-Si vous ne possédez pas encore le ichier, vous pouvez le télécharger [**ICI**], ou bien le créer vous même.
+Si vous ne possédez pas encore le fichier, vous pouvez le télécharger [**ICI**](https://drive.google.com/file/d/1GC1vScvBaAPDsibMUON1Yi5CTUG6EdOn/view?usp=drive_link), ou bien le créer vous même.
 Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 ```json
 {
