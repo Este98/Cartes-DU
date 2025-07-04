@@ -62,7 +62,7 @@ Cliquez dessus, et cette petite fenêtre va s'afficher :
 <img src="https://github.com/Este98/Cartes-DU/blob/asset/zerotier_windows.jpg">
 </p>
 
-La flèche rouge indique votre adresse par lequel le réseau va vous identifier. Pour les membres du serveur **Duel University**, merci d'envoyer cette adress en mp à Este à des fins de gestion.
+La flèche rouge indique votre adresse par lequel le réseau va vous identifier. Pour les membres du serveur **Duel University**, merci d'envoyer cette adress en mp à **Este** à des fins de gestion.
 
 Ensuite, cliquez sur la flèche jaune, "Join New Network", pour rejoindre le réseau virtuel.
 Pour les membres de la **Duel University**, l'adresse à rentrer se trouve sur le Discord.
