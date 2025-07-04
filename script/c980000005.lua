@@ -23,8 +23,8 @@ function s.initial_effect(c)
 	e2:SetCountLimit(1,{id,1})
 	e2:SetTarget(s.mattg)
 	e2:SetOperation(s.matop)
-	c:RegisterEffect(e2)
-end ]]
+	c:RegisterEffect(e2) ]]
+end
 s.listed_series={SET_SPRINGANS}
 
 --Special summon 1 "Sprigguns" monster from GY
