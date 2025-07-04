@@ -28,7 +28,7 @@ Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 }
 ```
 
-Et voilà. Si tout est bien fait, vous devriez voir ceci en ouvrant EdoPro: 
+Et voilà ! Si tout est bien fait, vous devriez voir ceci en ouvrant EdoPro: 
 
 <p align="center">
 <img src="https://github.com/Este98/Cartes-DU/blob/23b502184916bc25cccd6b534e6aa07145dd1c06/success_installation.jpg" >
@@ -50,7 +50,12 @@ TODO
 
 ## Utiliser les cartes custom en duel
 
-Dans un premier temps, il faut aller télécharger le [__client Zerotier__](https://www.zerotier.com/download/). Une fois fait, lancez l'installation. Vous devriez maintenant voir cette icône dans votr barre des tâches :
+Dans un premier temps, il faut aller télécharger le [__client Zerotier__](https://www.zerotier.com/download/). Une fois fait, lancez l'installation. 
+
+**!!! Si votre système vous demande d'autoriser les autres appareils du réseau à vous détecter, dites oui ! Sans quoi ça ne fonctionnera pas. !!!**
+
+
+Vous devriez maintenant voir cette icône dans votr barre des tâches :
 
 <p align="center">
 <img src= "https://github.com/Este98/Cartes-DU/blob/asset/zerotier_icone.jpg">
@@ -62,7 +67,7 @@ Cliquez dessus, et cette petite fenêtre va s'afficher :
 <img src="https://github.com/Este98/Cartes-DU/blob/asset/zerotier_windows.jpg">
 </p>
 
-La flèche rouge indique votre adresse par lequel le réseau va vous identifier. Pour les membres du serveur **Duel University**, merci d'envoyer cette adress en mp à **Este** à des fins de gestion.
+La flèche rouge indique votre adresse par lequel le réseau va vous identifier. Pour les membres du serveur **Duel University**, merci d'envoyer cette adresse en mp à **Este** à des fins de gestion.
 
 Ensuite, cliquez sur la flèche jaune, "Join New Network", pour rejoindre le réseau virtuel.
 Pour les membres de la **Duel University**, l'adresse à rentrer se trouve sur le Discord.
