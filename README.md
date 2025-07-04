@@ -28,7 +28,13 @@ Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 }
 ```
 
-Et voilà. Si tout est bien fait, cette étape est terminée. Vous pouvez passer directement à l'étape suivante.
+Et voilà. Si tout est bien fait, vous devriez voir ceci en ouvrant EdoPro: 
+
+<p align="center">
+<img src="https://github.com/Este98/Cartes-DU/tree/main/assets/succes_installation.jpg" >
+</p>
+
+ Vous pouvez maintenant passer à l'étape suivante.
 
 <details>
 <summary>
@@ -43,3 +49,4 @@ TODO
 </details>
 
 ## Utiliser les cartes custom
+
