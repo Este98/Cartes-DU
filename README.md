@@ -31,7 +31,7 @@ Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
 Et voilà. Si tout est bien fait, vous devriez voir ceci en ouvrant EdoPro: 
 
 <p align="center">
-<img src="https://github.com/Este98/Cartes-DU/tree/main/assets/succes_installation.jpg" >
+<img src="https://github.com/Este98/Cartes-DU/blob/23b502184916bc25cccd6b534e6aa07145dd1c06/success_installation.jpg" >
 </p>
 
  Vous pouvez maintenant passer à l'étape suivante.
