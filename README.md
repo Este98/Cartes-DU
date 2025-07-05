@@ -72,5 +72,6 @@ La flèche rouge indique votre adresse par lequel le réseau va vous identifier.
 Ensuite, cliquez sur la flèche jaune, "Join New Network", pour rejoindre le réseau virtuel.
 Pour les membres de la **Duel University**, l'adresse à rentrer se trouve sur le Discord.
 
+
 Si tout s'est bien passé, félicitations, vous êtes connecté !
 Il ne vous reste plus qu'à lancer Edopro, dans **Local + AI** et d'host une partie, et votre adversaire pourra cliquer sur "Refresh" pour vous trouver.
