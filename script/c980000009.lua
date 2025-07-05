@@ -1,4 +1,4 @@
---Y-Yare Head
+--Z-Zillion Tank
 --scripted by pyrQ
 local s,id=GetID()
 function s.initial_effect(c)
@@ -13,8 +13,7 @@ function s.initial_effect(c)
 	e1:SetOperation(s.eqop)
 	c:RegisterEffect(e1)
 	aux.AddEREquipLimit(c,nil,function(ec,c,tp) return ec:IsControler(tp) and s.eqfilter(ec,tp) end,Card.EquipByEffectAndLimitRegister,e1)
-	--setcode
-    local e3=Effect.CreateEffect(c)
+	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
 	e3:SetCode(EFFECT_ADD_CODE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
@@ -24,21 +23,21 @@ function s.initial_effect(c)
     --Union procedure
 	aux.AddUnionProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_MACHINE))
 end
-s.listed_names={62651957}
+s.listed_names={65622692}
 function s.eqfilter(c,tp)
 	return c:IsLevel(4) and c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_MACHINE) and c:CheckUniqueOnField(tp)
-		and not c:IsForbidden()
+		and not c:IsForbidden() and c:IsFaceup()
 end
 function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
-		and Duel.IsExistingMatchingCard(s.eqfilter,tp,LOCATION_HAND|LOCATION_GRAVE,0,1,nil,tp) end
-	Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_HAND|LOCATION_GRAVE)
+		and Duel.IsExistingMatchingCard(s.eqfilter,tp,LOCATION_REMOVED,0,1,nil,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_REMOVED)
 end
 function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and c:IsRelateToEffect(e) and c:IsFaceup() then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
-		local ec=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.eqfilter),tp,LOCATION_HAND|LOCATION_GRAVE,0,1,1,nil,tp):GetFirst()
+		local ec=Duel.SelectMatchingCard(tp,s.eqfilter,tp,LOCATION_REMOVED,0,1,1,nil,tp):GetFirst()
 		if ec then
 			c:EquipByEffectAndLimitRegister(e,tp,ec,nil,true)
 		end
