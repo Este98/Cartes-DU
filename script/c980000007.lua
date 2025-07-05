@@ -25,7 +25,7 @@ function s.initial_effect(c)
     --setcode
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_ADD_SETCODE)
+	e3:SetCode(EFFECT_ADD_CODE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetValue(62651957)
