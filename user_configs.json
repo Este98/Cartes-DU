@@ -6,6 +6,14 @@
          "repo_path": "./repositories/Duel University",
          "should_update": true,
          "should_read": true
-      }
+      },
+		{
+			"url": "https://github.com/Este98/Cartes-DU/tree/LFLists",
+			"repo_name": "Duel University custom banlist",
+			"repo_path": "./repositories/lflists",
+			"lflist_path": ".",
+			"should_update": true,
+			"should_read": true
+		},
 	]
 }
