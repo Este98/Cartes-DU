@@ -26,8 +26,8 @@ function s.initial_effect(c)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
-	--Increase the ATK of all "Dogmatika" monsters
-	local e3=Effect.CreateEffect(c)
+	--Increase the ATK of all "Dragma" monsters
+	--[[local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,2))
 	e3:SetCategory(CATEGORY_ATKCHANGE)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
@@ -36,8 +36,20 @@ function s.initial_effect(c)
     e3:SetReset(RESET_EVENT|RESETS_STANDARD)
 	e3:SetCountLimit(1,{id,2})
 	e3:SetCondition(s.atkcon)
-	e3:SetOperation(function(e) e:GetHandler():UpdateAttack(500) end)
-	c:RegisterEffect(e3)
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e3)]]
+	--Increase its ATK
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,2))
+	e4:SetCategory(CATEGORY_ATKCHANGE)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e4:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1,{id,2})
+	e4:SetCondition(s.atkcon)
+	e4:SetOperation(function(e) e:GetHandler():UpdateAttack(500) end)
+	c:RegisterEffect(e4)
 end
 s.listed_series={SET_DOGMATIKA}
 s.listed_names={id}
@@ -78,9 +90,18 @@ end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker():IsControler(1-tp)
 end
+function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,SET_DOGMATIKA),tp,LOCATION_MZONE,0,1,nil) end
+end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsFaceup() and c:IsRelateToEffect(e) then
-		c:UpdateAttack(500)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,SET_DOGMATIKA),tp,LOCATION_MZONE,0,nil)
+	for tc in aux.Next(g) do
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetValue(500)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+		tc:RegisterEffect(e1)
 	end
 end
