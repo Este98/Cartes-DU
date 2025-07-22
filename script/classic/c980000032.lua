@@ -36,7 +36,7 @@ function s.initial_effect(c)
     e3:SetReset(RESET_EVENT|RESETS_STANDARD)
 	e3:SetCountLimit(1,{id,2})
 	e3:SetCondition(s.atkcon)
-	e3:SetOperation(s.atkop)
+	e3:SetOperation(function(e) e:GetHandler():UpdateAttack(500) end)
 	c:RegisterEffect(e3)
 end
 s.listed_series={SET_DOGMATIKA}
@@ -77,12 +77,4 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetAttacker():IsControler(1-tp)
-end
-function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK)
-	e1:SetValue(500)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-	tc:RegisterEffect(e1)
 end
