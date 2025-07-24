@@ -64,7 +64,7 @@ function s.indval(e,c)
 end
 	--Check for "Dogmatika" monster (except for this card's name)
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(SET_DOGMATIKA) and c:IsLevelBelow(4) and not c:IsCode(id) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(SET_DOGMATIKA) and c:IsLevelBelow(4) and not c:IsCode(33296432) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 	--If destroyed by battle or card effect while on the field
 function s.spcon2(e,tp,eg,ep,ev,re,r,rp)
