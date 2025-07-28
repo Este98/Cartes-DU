@@ -15,7 +15,7 @@ function s.filterh(c)
     return Card.IsSetCard(c, 0x1083) and Card.IsLevel(c, 8)
 end
 function s.filterf(c)
-    return Card.IsSetCard(c, 0x1083) and not Card.IsLevel(c, 8)
+    return Card.IsSetCard(c, 0x1083) and not Card.IsLevel(c, 8) and Card.IsFaceup(c)
 end
 function s.flipop(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SKILL_FLIP,tp,id|(1<<32))
