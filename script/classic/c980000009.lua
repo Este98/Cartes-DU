@@ -18,7 +18,7 @@ function s.initial_effect(c)
 	e3:SetCode(EFFECT_ADD_CODE)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_ONFIELD|LOCATION_GRAVE)
-	e3:SetValue(65622692)
+	e3:SetValue(64500000)
 	c:RegisterEffect(e3)
     --Union procedure
 	aux.AddUnionProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_MACHINE))
