@@ -18,6 +18,9 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.listed_series={SET_DESPIA}
+function s.matfilter(c,fc,st,tp)
+	return c:IsAttribute(ATTRIBUTE_LIGHT,fc,st,tp) or c:IsAttribute(ATTRIBUTE_DARK,fc,st,tp)
+end
 function s.spcfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_RITUAL+TYPE_FUSION+TYPE_SYNCHRO+TYPE_XYZ+TYPE_LINK)
 end
