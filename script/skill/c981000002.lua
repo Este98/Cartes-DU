@@ -1,5 +1,5 @@
 --Trickstar Gig
---Scripted by tEste
+--Scripted by Este
 local s,id=GetID()
 function s.initial_effect(c)
 	aux.AddVrainsSkillProcedure(c,s.flipcon,s.flipop)
