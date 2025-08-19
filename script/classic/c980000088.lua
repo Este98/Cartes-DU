@@ -66,6 +66,7 @@ function s.negop(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetValue(RESET_TURN_SET)
 		e2:SetReset(RESETS_STANDARD_PHASE_END)
 		tc:RegisterEffect(e2)
+    end
 end
 	--If your "Dogmatika" monster declares an attack
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
