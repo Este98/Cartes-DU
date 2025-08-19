@@ -44,3 +44,8 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	e2:SetReset(RESETS_STANDARD_PHASE_END)
 	c:RegisterEffect(e2)
 end
+function s.atkcon(e)
+	local c=e:GetHandler()
+	if Duel.GetAttackTarget()==nil then return end
+	return Duel.IsPhase(PHASE_DAMAGE_CAL) and Duel.GetFieldGroupCount(e:GetHandlerPlayer(),0,LOCATION_MZONE)==1
+end
