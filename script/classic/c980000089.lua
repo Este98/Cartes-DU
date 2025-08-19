@@ -58,7 +58,7 @@ end
 function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Group.CreateGroup()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local sc=Duel.SelectMatchingCard(p,Card.IsAbleToGrave,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
+	local sc=Duel.SelectMatchingCard(tp,Card.IsAbleToGrave,tp,LOCATION_EXTRA,0,1,1,nil):GetFirst()
 	if sc then
 		sg:AddCard(sc)
 	end
@@ -67,7 +67,7 @@ function s.tgop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.thfilter(c)
-	return c:IsSetCard(SET_DOGMATIKA) and c:IsAbleToHand() and not c:IsCode(id)
+	return c:IsSetCard(SET_DOGMATIKA) and c:IsAbleToHand() and not c:IsCode(100200278)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.thfilter(chkc) end

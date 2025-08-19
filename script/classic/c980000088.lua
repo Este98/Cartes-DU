@@ -7,6 +7,7 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id, 1))
     e1:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_NO_TURN_RESET)
+    e1:SetCategory(CATEGORY_DISABLE)
     e1:SetType(EFFECT_TYPE_IGNITION)
     e1:SetRange(LOCATION_MZONE)
     e1:SetCountLimit(1)
@@ -32,7 +33,7 @@ s.listed_series={SET_DOGMATIKA}
 s.listed_names={id}
 	--If special summoned from extra deck
 function s.cfilter(c)
-	return c:IsSummonLocation(LOCATION_EXTRA)
+	return c:IsSpecialSummoned() and c:IsSummonLocation(LOCATION_EXTRA)
 end
     --If another "Dogmatika" monster is on your field
 function s.dogmafilter(c)
@@ -48,7 +49,7 @@ function s.negtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.cfilter(chkc) end
 	if chk==0 then return Duel.IsExistingTarget(s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.cfilter,tp,0,LOCATION_MZONE,1,1,nil)
+	Duel.SelectTarget(tp,s.cfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 end
     --Negate effects of monster SS from Extra Deck
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
