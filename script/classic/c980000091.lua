@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetOperation(s.regop)
 	c:RegisterEffect(e2)
-	--Add to your hand, or Special Summon, 1 "Dogmatika" monster or 1 "Fallen of Albaz" from your Deck
+	--Add to your hand 1 "Dogmatika" monster or 1 "Fallen of Albaz" from your Deck
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
 	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
@@ -75,7 +75,7 @@ function s.thsptg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.thspop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,thspfilter,tp,LOCATION_DECK,0,1,1,nil)
+	local g=Duel.SelectMatchingCard(tp,s.thspfilter,tp,LOCATION_DECK,0,1,1,nil)
 	if #g>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 		Duel.ConfirmCards(1-tp,g)
