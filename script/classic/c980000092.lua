@@ -85,12 +85,9 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) or not Duel.IsChainDisablable(ev) or rp==tp
-		or not e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,16195942) then return false end
-	if re:IsHasCategory(CATEGORY_NEGATE)
-		and Duel.GetChainInfo(ev-1,CHAININFO_TRIGGERING_EFFECT):IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
-	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
-	return ex and tg~=nil and tc+tg-#tg>0
+	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainDisablable(ev) 
+		and rp==1-tp and Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
+		and e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,16195942)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
