@@ -42,6 +42,7 @@ function s.initial_effect(c)
 	e3:SetCost(Cost.DetachFromSelf(1,1,nil))
 	e3:SetTarget(s.distg)
 	e3:SetOperation(s.disop)
+	e3:RegisterEffect(e3)
 	--Double Snare
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
