@@ -1,4 +1,3 @@
---ダーク・レクイエム・エクシーズ・ドラゴン
 --Dark Requiem Xyz Dragon
 local s,id=GetID()
 function s.initial_effect(c)
@@ -18,6 +17,38 @@ function s.initial_effect(c)
 	e1:SetTarget(s.atktg)
 	e1:SetOperation(s.atkop)
 	c:RegisterEffect(e1)
+	--[[--Negate monster effect activation and special summon 1 Xyz monster
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_DESTROY+CATEGORY_NEGATE+CATEGORY_SPECIAL_SUMMON)
+	e2:SetType(EFFECT_TYPE_QUICK_O)
+	e2:SetCode(EVENT_CHAINING)
+	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCondition(s.discon)
+	e2:SetCost(Cost.DetachFromSelf(1,1,nil))
+	e2:SetTarget(s.distg)
+	e2:SetOperation(s.disop)
+	c:RegisterEffect(e2)]]
+	----Negate destroying effect activation and special summon 1 Xyz monster
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_DESTROY+CATEGORY_NEGATE+CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_QUICK_O)
+	e3:SetCode(EVENT_CHAINING)
+	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCost(Cost.DetachFromSelf(1,1,nil))
+	e3:SetCondition(s.discon)
+	e3:SetTarget(s.distg)
+	e3:SetOperation(s.disop)
+	--Double Snare
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SINGLE_RANGE)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCode(3682106)
+	c:RegisterEffect(e5)
 end
 s.listed_names={16195942}
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
@@ -48,6 +79,37 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 			e2:SetReset(RESET_EVENT|RESETS_STANDARD)
 			e2:SetValue(atk)
 			c:RegisterEffect(e2)
+		end
+	end
+end
+function s.discon(e,tp,eg,ep,ev,re,r,rp)
+	if (e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) or not Duel.IsChainDisablable(ev)) 
+		and not e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,16195942) then return false end
+	if re:IsHasCategory(CATEGORY_NEGATE)
+		and Duel.GetChainInfo(ev-1,CHAININFO_TRIGGERING_EFFECT):IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
+	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
+	return ex and tg~=nil and tc+tg:FilterCount(Card.IsOnField,nil)-#tg>0
+end
+function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
+	if re:GetHandler():IsDestructable() and re:GetHandler():IsRelateToEffect(re) then
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
+	end
+	Duel.SetPossibleOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
+end
+function s.spfilter(c,e,tp)
+	return c:IsType(TYPE_XYZ) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+end
+function s.disop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) and Duel.Destroy(eg,REASON_EFFECT)>0 then
+		if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+		local g=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.spfilter),tp,LOCATION_GRAVE,0,nil,e,tp)
+		if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,2)) then
+			Duel.BreakEffect()
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+			local sg=g:Select(tp,1,1,nil)
+			Duel.SpecialSummon(sg,0,tp,tp,false,false,POS_FACEUP)
 		end
 	end
 end
