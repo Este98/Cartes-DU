@@ -37,6 +37,7 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_QUICK_O)
 	e3:SetCode(EVENT_CHAINING)
 	e3:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e3:SetCountLimit(1)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCondition(s.discon)
 	e3:SetCost(Cost.DetachFromSelf(1,1,nil))
@@ -84,12 +85,12 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) or not Duel.IsChainDisablable(ev)
+	if e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) or not Duel.IsChainDisablable(ev) or rp==tp
 		or not e:GetHandler():GetOverlayGroup():IsExists(Card.IsCode,1,nil,16195942) then return false end
 	if re:IsHasCategory(CATEGORY_NEGATE)
 		and Duel.GetChainInfo(ev-1,CHAININFO_TRIGGERING_EFFECT):IsHasType(EFFECT_TYPE_ACTIVATE) then return false end
 	local ex,tg,tc=Duel.GetOperationInfo(ev,CATEGORY_DESTROY)
-	return ex and tg~=nil and tc+tg:FilterCount(Card.IsOnField,nil)-#tg>0
+	return ex and tg~=nil and tc+tg-#tg>0
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
