@@ -16,6 +16,14 @@ function s.initial_effect(c)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e2)
+	--change name
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetCode(EFFECT_CHANGE_CODE)
+	e3:SetRange(LOCATION_ALL)
+	e3:SetValue(62962630)
+	c:RegisterEffect(e3)
 end
 s.listed_series={SET_BRANDED}
 function s.thfilter(c)
