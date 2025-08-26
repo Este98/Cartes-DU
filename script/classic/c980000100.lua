@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-	Xyz.AddProcedure(c,nil,9,3,s.ovfilter,aux.Stringid(id,0))
+	Xyz.AddProcedure(c,nil,9,3,nil,aux.Stringid(id,0))
 	c:EnableReviveLimit()
 	--xyzlimit
 	local e1=Effect.CreateEffect(c)
@@ -30,9 +30,6 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.xyz_number=95
-function s.ovfilter(c,tp,xyzc)
-	return c:IsFaceup() and c:IsSetCard(SET_GALAXY_EYES,xyzc,SUMMON_TYPE_XYZ,tp) and c:IsType(TYPE_XYZ,xyzc,SUMMON_TYPE_XYZ,tp)
-end
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsXyzSummoned()
 end
