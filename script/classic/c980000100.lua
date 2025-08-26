@@ -1,9 +1,9 @@
 --Number 95: Galaxy-Eyes Dark Matter Dragon
 local s,id=GetID()
 function s.initial_effect(c)
-	--xyz summon
-	Xyz.AddProcedure(c,nil,9,3,nil,aux.Stringid(id,0))
 	c:EnableReviveLimit()
+	--xyz summon
+	Xyz.AddProcedure(c,nil,9,3)
 	--xyzlimit
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
@@ -30,6 +30,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.xyz_number=95
+s.listed_series={SET_NUMBER_C}
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsXyzSummoned()
 end
