@@ -9,6 +9,7 @@ function s.flipcon(e,tp,eg,ep,ev,re,r,rp)
     --condition
     return aux.CanActivateSkill(tp) and Duel.IsExistingMatchingCard(s.filter, tp, LOCATION_MZONE, 0, 1, nil)
         and Duel.IsExistingMatchingCard(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil)
+        and Duel.IsExistingMatchingCard(Card.IsAbleToGrave, tp, LOCATION_HAND, 0, 1, nil)
 end
 function s.filter(c)
     return c:IsFaceup() and c:IsSetCard(SET_REPTILIANNE)
@@ -20,7 +21,11 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
     Duel.RegisterFlagEffect(ep,id,0,0,0)
     --Skill negation check
     if aux.CheckSkillNegation(e,tp) then return end
-    if Duel.IsExistingMatchingCard(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil) then
+    if Duel.IsExistingMatchingCard(Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, nil)
+        and Duel.IsExistingMatchingCard(Card.IsAbleToGrave, tp, LOCATION_HAND, 0, 1, nil) then
+        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	    local g=Duel.SelectMatchingCard(tp,Card.IsAbleToGraveAsCost,tp,LOCATION_HAND,0,1,1,nil)
+	    Duel.SendtoGrave(g,REASON_EFFECT)
         Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_FACEUP)
         local tc=Duel.SelectMatchingCard(tp, Card.IsFaceup, tp, 0, LOCATION_MZONE, 1, 1, nil):GetFirst()
         if tc then
