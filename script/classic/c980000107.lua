@@ -42,7 +42,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local b2=s.atktg(e,tp,eg,ep,ev,re,r,rp,0)
 	if chk==0 then return b0 or b1 or b2 end
 	local sel=0
-	for ct=1 do
+    
 		local stable={}
 		local dtable={}
 		if b0 and (sel&0x1==0) then
@@ -60,7 +60,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EFFECT)
 		local op=Duel.SelectOption(tp,table.unpack(dtable))+1
 		sel=sel+stable[op]
-	end
+
 	if (sel&0x1==0x1) then s.mthtg(e,tp,eg,ep,ev,re,r,rp,1) end
 	if (sel&0x2==0x2) then s.stthtg(e,tp,eg,ep,ev,re,r,rp,1) end
 	if (sel&0x4==0x4) then s.atktg(e,tp,eg,ep,ev,re,r,rp,1) end
