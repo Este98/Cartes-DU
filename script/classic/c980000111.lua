@@ -19,9 +19,9 @@ function s.initial_effect(c)
 end
 s.listed_series={SET_MELODIOUS}
 s.material_setcode={SET_MELODIOUS}
-s.listed_names={id}
+s.listed_names={84988419}
 function s.gyspfilter(c,e,tp)
-	return c:IsSetCard(SET_MELODIOUS) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) and not c:IsCode(id)
+	return c:IsSetCard(SET_MELODIOUS) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE) and not c:IsCode(84988419)
 end
 function s.gysptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.gyspfilter(chkc,e,tp) end
