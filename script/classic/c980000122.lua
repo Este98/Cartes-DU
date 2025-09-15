@@ -60,13 +60,13 @@ end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local g=Duel.IsExistingMatchingCard(Card.IsFacedown, tp, 0, LOCATION_SZONE, 1, nil)
-	if #g>0 then
+	if g then
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
 	end
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.IsExistingMatchingCard(Card.IsFacedown, tp, 0, LOCATION_SZONE, 1, nil)
-	if #g>0 then
+	if g then
 		Duel.Hint(HINT_SELECTMSG, tp, HINTMSG_DESTROY)
 		local tc=Duel.SelectMatchingCard(tp, Card.IsFacedown, tp, 0, LOCATION_SZONE, 1, 1, nil)
 		if #tc>0 then
