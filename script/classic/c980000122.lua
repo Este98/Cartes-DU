@@ -61,7 +61,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	local g=Duel.IsExistingMatchingCard(Card.IsFacedown, tp, 0, LOCATION_SZONE, 1, nil)
 	if g then
-		Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,#g,0,0)
+		Duel.SetOperationInfo(0,CATEGORY_DESTROY,1,1,0,0)
 	end
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
