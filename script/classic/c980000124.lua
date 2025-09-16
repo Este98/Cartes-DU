@@ -5,6 +5,8 @@ function s.initial_effect(c)
 	--Fusion Materials: 1 Fiend monster + 1 Warrior monster
 	Fusion.AddProcMix(c,true,true,aux.FilterBoolFunctionEx(Card.IsRace,RACE_FIEND),aux.FilterBoolFunctionEx(Card.IsRace,RACE_WARRIOR))
 	c:AddMustBeSpecialSummonedByDarkFusion()
+	-- Unique ID for Evil HERO Darkest Knight
+    c:SetUniqueOnField(1,0,86282581)
 	--Count the total original levels of its Fusion Materials
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
