@@ -5,12 +5,12 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Ritual
 	c:EnableReviveLimit()
-	--Treated as a Legend Card in the GY
+	--Treated as a Legend Card in hand or in the GY
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
 	e0:SetCode(EFFECT_IS_LEGEND)
 	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e0:SetRange(LOCATION_GRAVE)
+	e0:SetRange(LOCATION_GRAVE|LOCATION_HAND)
 	c:RegisterEffect(e0)
 	--Gain ATK
 	local e1=Effect.CreateEffect(c)
