@@ -17,13 +17,6 @@ function s.initial_effect(c)
 	e1:SetTarget(s.rmtg)
 	e1:SetOperation(s.rmop)
 	c:RegisterEffect(e1)
-	--Can make a second attack during each Battle Phase, while a Level 10 or higher monster is banished
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_SINGLE)
-	e3:SetCode(EFFECT_EXTRA_ATTACK)
-	e3:SetCondition(function(e) return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsLevelAbove,10),0,LOCATION_REMOVED,LOCATION_REMOVED,1,nil) end)
-	e3:SetValue(1)
-	c:RegisterEffect(e3)
 end
 s.listed_series={SET_SERKET}
 function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
