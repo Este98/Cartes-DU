@@ -71,10 +71,10 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
-	local g1=aux.SelectUnselectGroup(g,e,tp,1,1,aux.dncheck,1,tp,HINTMSG_REMOVE,nil,nil,true)
+	local g1=aux.SelectUnselectGroup(g,e,tp,1,1,aux.dncheck,1,tp,HINTMSG_TODECK,nil,nil,true)
     local g2=g.RemoveCard(g, g1:GetFirst())
-    Duel.Remove(g1, nil, REASON_COST)
-	Duel.SendtoDeck(g2,nil,SEQ_DECKBOTTOM,REASON_COST)
+    Duel.Remove(g2, nil, REASON_COST)
+	Duel.SendtoDeck(g1,nil,SEQ_DECKBOTTOM,REASON_COST)
 	g:DeleteGroup()
 end
 function s.thfilter(c)
