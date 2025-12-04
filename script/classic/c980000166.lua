@@ -27,6 +27,11 @@ function s.initial_effect(c)
 	e3:SetTarget(function(e,c) return c==e:GetHandler() end)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e4:SetTargetRange(LOCATION_ONFIELD,0)
+	e4:SetTarget(function(e,c) return c:IsCode(CARD_TEMPLE_OF_THE_KINGS) end)
+	c:RegisterEffect(e4)
 end
 s.listed_names={CARD_TEMPLE_OF_THE_KINGS}
 s.listed_series={SET_APOPHIS}
