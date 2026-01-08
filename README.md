@@ -20,7 +20,7 @@ Pour ce faire, copiez-coller le contenue suivant à l'intérieur :
       {
          "url": "https://github.com/Este98/Cartes-DU",
          "repo_name": "Duel University Custom Cards",
-         "repo_path": "./repositories/Duel University",
+         "repo_path": "./repositories/duel-university",
          "should_update": true,
          "should_read": true
       }
