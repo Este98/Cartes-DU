@@ -1,32 +1,29 @@
---Witchcrafter Schmietta
---scripted by Naim
+--Toon Kingdom (C)
 local s,id=GetID()
 function s.initial_effect(c)
-	--Send 1 "Witchcrafter" from your Deck to the GY
+	--activate
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.activate)
+	c:RegisterEffect(e1)
+	--change name
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_TOGRAVE)
-	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetRange(LOCATION_GRAVE)
-	e2:SetCountLimit(1,{id,1})
-	e2:SetCost(Cost.SelfBanish)
-	e2:SetTarget(s.tgtg)
-	e2:SetOperation(s.tgop)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetCode(EFFECT_CHANGE_CODE)
+	e2:SetRange(LOCATION_SZONE)
+	e2:SetValue(15259703)
 	c:RegisterEffect(e2)
 end
-s.listed_series={SET_WITCHCRAFTER}
-s.listed_names={21744288}
-function s.tgfilter(c)
-	return c:IsSetCard(SET_WITCHCRAFTER) and not c:IsCode(21744288) and c:IsAbleToGrave()
+s.listed_names={15259703}
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetDecktopGroup(tp,5):IsExists(Card.IsAbleToRemove,5,nil) end
 end
-function s.tgtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.tgfilter,tp,LOCATION_DECK,0,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,1,tp,LOCATION_DECK)
-end
-function s.tgop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectMatchingCard(tp,s.tgfilter,tp,LOCATION_DECK,0,1,1,nil)
-	if #g>0 then
-		Duel.SendtoGrave(g,REASON_EFFECT)
-	end
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	local g=Duel.GetDecktopGroup(tp,3)
+	Duel.DisableShuffleCheck()
+	Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 end
