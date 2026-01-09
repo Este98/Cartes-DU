@@ -1,47 +1,76 @@
---Rekindling the Ashened
---scripted by pyrQ
+--Springans Rockey
 local s,id=GetID()
 function s.initial_effect(c)
-	--Negate the effects of 1 Effect Monster your opponent controls until the end of the turn
+	--[[--Attach itself to 1 "Sprigguns" Xyz monster from hand, field, or GY
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_DISABLE)
-	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetCode(EVENT_FREE_CHAIN)
-	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
-	e1:SetHintTiming(0,TIMING_MAIN_END|TIMINGS_CHECK_MONSTER)
-	e1:SetCost(s.cost)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.activate)
-	c:RegisterEffect(e1)
+	e1:SetRange(LOCATION_GRAVE|LOCATION_HAND|LOCATION_MZONE)
+	e1:SetCountLimit(1,id)
+	e1:SetTarget(s.mattg)
+	e1:SetOperation(s.matop)
+	c:RegisterEffect(e1) ]]
+	--If normal or special summoned, add 1 "Sprigguns" monster or "Vast Desert – Gold Golgonda" from GY
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_TOHAND)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
+	e2:SetCode(EVENT_SUMMON_SUCCESS)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e2:SetCountLimit(1,{id,1})
+	e2:SetTarget(s.thtg)
+	e2:SetOperation(s.thop)
+	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e3)
 end
-s.listed_series={SET_ASHENED}
-s.listed_names={id}
-function s.costfilter(c)
-	return c:IsSetCard(SET_ASHENED) and c:IsFaceup() and c:IsAbleToDeckAsCost() and not c:IsCode(id)
+	--Lists "Sprigguns" archetype
+s.listed_series={SET_SPRINGANS}
+	--Specifically lists "Vast Desert – Gold Golgonda" and itself
+s.listed_names={60884672,id}
+
+	--[[--Check for "Sprigguns" Xyz monster
+function s.matfilter(c)
+	return c:IsFaceup() and c:IsSetCard(SET_SPRINGANS) and c:IsType(TYPE_XYZ)
 end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_REMOVED|LOCATION_GRAVE,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-	local g=Duel.SelectMatchingCard(tp,s.costfilter,tp,LOCATION_REMOVED|LOCATION_GRAVE,0,1,1,nil)
-	Duel.HintSelection(g)
-	Duel.SendtoDeck(g,nil,SEQ_DECKBOTTOM,REASON_COST)
+	--Activation legality
+function s.mattg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.matfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.matfilter,tp,LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+	Duel.SelectTarget(tp,s.matfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	if(e:GetHandler():IsLocation(LOCATION_GRAVE)) then
+		Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,e:GetHandler(),1,0,0)
+	end
 end
-function s.disfilter(c)
-	return c:IsType(TYPE_EFFECT) and c:IsNegatableMonster()
-end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and c:IsControler(1-tp) and s.disfilter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.disfilter,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_NEGATE)
-	local g=Duel.SelectTarget(tp,s.disfilter,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,tp,0)
-end
-function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	--Attach itself to targeted "Sprigguns" Xyz monster from hand, field, or GY
+function s.matop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsFaceup() then
-		--Negate its effects until the end of this turn
-		tc:NegateEffects(e:GetHandler(),RESET_PHASE|PHASE_END)
+	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and not tc:IsImmuneToEffect(e) then
+		Duel.Overlay(tc,c)
+	end
+end ]]
+
+	--Check for "Spriggun" monster or "Vast Desert – Gold Golgonda"
+function s.thfilter(c)
+	return ((c:IsMonster() and c:IsSetCard(SET_SPRINGANS)) or c:IsCode(60884672)) and not c:IsCode(id) and c:IsAbleToHand()
+end
+	--Activation legality
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.thfilter(chkc) end
+	if chk==0 then return Duel.IsExistingTarget(s.thfilter,tp,LOCATION_GRAVE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectTarget(tp,s.thfilter,tp,LOCATION_GRAVE,0,1,1,nil)
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,g,1,0,0)
+end
+	--Add 1 "Sprigguns" or "Vast Desert – Gold Golgonda" from GY
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) then
+		Duel.SendtoHand(tc,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,tc)
 	end
 end
