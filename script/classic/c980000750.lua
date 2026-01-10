@@ -2,6 +2,14 @@
 --scripted by pyrQ
 local s,id=GetID()
 function s.initial_effect(c)
+	--Change name to "Aluber the Jester of Despia"
+    local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_CHANGE_CODE)
+	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e0:SetRange(LOCATION_ALL)
+	e0:SetValue(62962630)
+	c:RegisterEffect(e0)
 	--Search 1 "Branded" Spell/Trap
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))

@@ -33,6 +33,14 @@ function s.initial_effect(c)
 	e2:SetTarget(s.tdtg)
 	e2:SetOperation(s.tdop)
 	c:RegisterEffect(e2)
+	--Change name to "Lib the World Key Blademaster"
+    local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_CHANGE_CODE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_ALL)
+	e3:SetValue(39752820)
+	c:RegisterEffect(e3)
 end
 s.listed_series={SET_WORLD_LEGACY}
 function s.splimit(e,se,sp,st)

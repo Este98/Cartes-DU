@@ -2,6 +2,14 @@
 --Scripted by Eerie Code
 local s,id=GetID()
 function s.initial_effect(c)
+	--Change name to "Visas Starfrost"
+    local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_CHANGE_CODE)
+	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e0:SetRange(LOCATION_ALL)
+	e0:SetValue(CARD_VISAS_STARFROST)
+	c:RegisterEffect(e0)
 	--Special Summon
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_DESTROY)
@@ -12,14 +20,6 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
-	--Change name to "Visas Starfrost"
-    local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_CHANGE_CODE)
-	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e2:SetRange(LOCATION_ALL)
-	e2:SetValue(CARD_VISAS_STARFROST)
-	c:RegisterEffect(e2)
 end
 function s.spfilter(c,hc,tp)
 	return c:IsFaceup() and not c:IsRace(hc:GetRace()) and not c:IsAttribute(hc:GetAttribute())

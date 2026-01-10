@@ -4,6 +4,14 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--Xyz Summon procedure: 2 Level 5 monsters
 	Xyz.AddProcedure(c,nil,5,2)
+	--Change name to "Super Quantal Mech Beast Magnaliger"
+    local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_CHANGE_CODE)
+	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e0:SetRange(LOCATION_ALL)
+	e0:SetValue(57031794)
+	c:RegisterEffect(e0)
 	--Cannot attack unless it has Xyz Material
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
