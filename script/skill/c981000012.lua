@@ -68,6 +68,7 @@ function s.con(e,tp,eg,ep,ev,re,r,rp)
 		and (opt1 or opt2)
 end
 function s.op(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_CARD,tp,id)
 	--Add Ritual Monster from Deck
 	local opt1=Duel.IsExistingMatchingCard(Card.IsRitualMonster, tp, LOCATION_DECK, 0, 1, nil)
 		and (e:GetLabel()==0 or (e:GetLabel()>1 and e:GetLabel()<3))
