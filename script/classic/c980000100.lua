@@ -1,70 +1,19 @@
---Number 95: Galaxy-Eyes Dark Matter Dragon
+--Supreme King's Castle
 local s,id=GetID()
 function s.initial_effect(c)
-	c:EnableReviveLimit()
-	--xyz summon
-	Xyz.AddProcedure(c,nil,9,3)
-	--xyzlimit
+	--Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCode(EFFECT_CANNOT_BE_XYZ_MATERIAL)
-	e1:SetValue(1)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
 	c:RegisterEffect(e1)
-	--send to GY
+	--Dark Fusion Ignore
 	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	e2:SetCondition(s.rmcon)
-	e2:SetTarget(s.rmtg)
-	e2:SetOperation(s.rmop)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetType(EFFECT_TYPE_FIELD)
+	e2:SetCode(72043279)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	e2:SetRange(LOCATION_FZONE)
+	e2:SetTargetRange(1,0)
 	c:RegisterEffect(e2)
-	--multi attack
-	local e3=Effect.CreateEffect(c)
-	e3:SetType(EFFECT_TYPE_IGNITION)
-	e3:SetRange(LOCATION_MZONE)
-	e3:SetCondition(s.atkcon)
-	e3:SetCost(Cost.DetachFromSelf(1))
-	e3:SetTarget(s.atktg)
-	e3:SetOperation(s.atkop)
-	c:RegisterEffect(e3)
 end
-s.xyz_number=95
-s.listed_series={SET_NUMBER_C}
-function s.rmcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsXyzSummoned()
-end
-function s.cfilter(c)
-	return c:IsRace(RACE_DRAGON) and c:IsAbleToGrave()
-end
-function s.rmtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_DECK,0,3,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,nil,3,tp,LOCATION_DECK)
-end
-function s.rmop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.cfilter,tp,LOCATION_DECK,0,nil)
-	if #g>=3 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-		local sg=g:Select(tp,3,3,nil)
-		Duel.SendtoGrave(sg,REASON_EFFECT)
-	end
-end
-function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsAbleToEnterBP()
-end
-function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():GetEffectCount(EFFECT_EXTRA_ATTACK)==0
-		and e:GetHandler():GetEffectCount(EFFECT_EXTRA_ATTACK_MONSTER)==0 end
-end
-function s.atkop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) then
-		local e1=Effect.CreateEffect(c)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-		e1:SetCode(EFFECT_EXTRA_ATTACK_MONSTER)
-		e1:SetValue(1)
-		e1:SetReset(RESETS_STANDARD_PHASE_END)
-		c:RegisterEffect(e1)
-	end
-end
+s.listed_names={CARD_DARK_FUSION}

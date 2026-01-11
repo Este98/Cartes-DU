@@ -1,55 +1,57 @@
---Gate Guardian Ritual
+--Phantasm Spiral Crash
 local s,id=GetID()
 function s.initial_effect(c)
-    
-    local e1=Effect.CreateEffect(c)
-    e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-    e1:SetType(EFFECT_TYPE_ACTIVATE)
-    e1:SetCode(EVENT_FREE_CHAIN)
-    e1:SetTarget(s.target)
-    e1:SetOperation(s.operation)
-    c:RegisterEffect(e1)
+	aux.AddEquipProcedure(c,nil,aux.FilterBoolFunction(Card.IsType,TYPE_NORMAL))
+	--pierce
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_EQUIP)
+	e3:SetCode(EFFECT_PIERCE)
+	c:RegisterEffect(e3)
+	--special summon
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e4:SetCode(EVENT_BATTLE_DAMAGE)
+	e4:SetRange(LOCATION_SZONE)
+	e4:SetCountLimit(1,id)
+	e4:SetCondition(s.spcon)
+	e4:SetTarget(s.sptg)
+	e4:SetOperation(s.spop)
+	c:RegisterEffect(e4)
 end
-s.fit_monster={25833572} --"Gate Guardian"
-s.listed_names=CARDS_SANGA_KAZEJIN_SUIJIN
-function s.guardianfilter(c,e,tp)
-    return c:IsCode(25833572) and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,true,false)
+s.listed_names={56649609}
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return ep~=tp and eg:GetFirst()==e:GetHandler():GetEquipTarget()
 end
-function s.matfilter(c)
-    return c:IsCode(25955164, 62340868, 98434877) and c:IsAbleToGrave()
+function s.spfilter(c,e,tp)
+	return c:IsCode(56649609) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then
-        local mg=Duel.GetMatchingGroup(s.matfilter,tp,LOCATION_HAND|LOCATION_ONFIELD,0,nil)
-        return Duel.IsExistingMatchingCard(s.guardianfilter,tp,LOCATION_HAND|LOCATION_DECK,0,1,nil,e,tp)
-            and mg:IsExists(Card.IsCode,1,nil,25955164) --Sanga
-            and mg:IsExists(Card.IsCode,1,nil,62340868) --Kazejin
-            and mg:IsExists(Card.IsCode,1,nil,98434877) --Suijin
-    end
-    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND|LOCATION_DECK)
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_HAND,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp)
-    local mg=Duel.GetMatchingGroup(s.matfilter,tp,LOCATION_HAND|LOCATION_ONFIELD,0,nil)
-    if not (mg:IsExists(Card.IsCode,1,nil,25955164) --Sanga
-        and mg:IsExists(Card.IsCode,1,nil,62340868) --Kazejin
-        and mg:IsExists(Card.IsCode,1,nil,98434877)) --Suijin
-        then return end
-
-    Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-    local tg=Duel.SelectMatchingCard(tp,s.guardianfilter,tp,LOCATION_HAND|LOCATION_DECK,0,1,1,nil,e,tp)
-    if #tg>0 then
-        local tc=tg:GetFirst()
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-        local mat1=mg:FilterSelect(tp,Card.IsCode,1,1,nil,25955164) --Sanga
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-        local mat2=mg:FilterSelect(tp,Card.IsCode,1,1,nil,62340868) --Kazejin
-        Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-        local mat3=mg:FilterSelect(tp,Card.IsCode,1,1,nil,98434877) --Suijin
-        mat1:Merge(mat2)
-        mat1:Merge(mat3)
-        Duel.SendtoGrave(mat1,REASON_MATERIAL+REASON_RITUAL)
-        Duel.BreakEffect()
-        Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,true,false,POS_FACEUP)
-        tc:CompleteProcedure()
-    end
+function s.posfilter(c)
+	return c:IsAttackPos() and c:IsCanChangePosition()
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not c:IsRelateToEffect(e) then return end
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.spfilter),tp,LOCATION_HAND,0,1,1,nil,e,tp)
+	if #g>0 then
+		local tc=g:GetFirst()
+		if Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP)~=0 then
+			Duel.Equip(tp,c,tc)
+			Duel.SpecialSummonComplete()
+			local g=Duel.GetMatchingGroup(s.posfilter,tp,0,LOCATION_MZONE,nil)
+			if #g>0 and Duel.SelectYesNo(tp,aux.Stringid(id,1)) then
+				Duel.BreakEffect()
+				local sg=g:Select(tp,1,1,nil)
+				Duel.ChangePosition(sg,POS_FACEUP_DEFENSE,POS_FACEDOWN_DEFENSE,0,0)
+			end
+		end
+	end
 end

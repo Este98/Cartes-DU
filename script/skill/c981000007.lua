@@ -26,6 +26,7 @@ function s.flipop(e,tp,eg,ep,ev,re,r,rp)
     Duel.RegisterEffect(e2,tp)
 end
 function s.skillop(e,tp,eg,ep,ev,re,r,rp)
+    Duel.Hint(HINT_CARD,tp,id)
     Duel.Damage(1-tp,1000,REASON_EFFECT)
     local bt1=Duel.CreateToken(tp, 43906884)
     local bt2=Duel.CreateToken(tp, 43906884)

@@ -1,37 +1,83 @@
---Stardust Trail
---Scripted by Hel
+--X-Cross Cannon
 local s,id=GetID()
 function s.initial_effect(c)
-	--special summon 2 token if used as synchro material
+	--Special Summon this card from your hand
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_IGNITION)
+	e1:SetRange(LOCATION_HAND)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.spcon)
+	e1:SetTarget(s.sptg)
+	e1:SetOperation(s.spop)
+	c:RegisterEffect(e1)
+	--Equip 1 appropriate LIGHT Machine Union monster from your Deck to this card as if it were equipped by that monster's effect
 	local e2=Effect.CreateEffect(c)
-	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_TOKEN)
-	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e2:SetCode(EVENT_BE_MATERIAL)
-	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
+	e2:SetDescription(aux.Stringid(id,1))
+	e2:SetCategory(CATEGORY_EQUIP)
+	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetRange(LOCATION_MZONE)
 	e2:SetCountLimit(1,{id,1})
-	e2:SetCondition(s.stcon)
-	e2:SetTarget(s.sttg)
-	e2:SetOperation(s.stop)
+	e2:SetTarget(s.eqtg)
+	e2:SetOperation(s.eqop)
 	c:RegisterEffect(e2)
+    --setcode
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_SINGLE)
+	e3:SetCode(EFFECT_ADD_CODE)
+	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e3:SetRange(LOCATION_ONFIELD|LOCATION_GRAVE)
+	e3:SetValue(62651957)
+	c:RegisterEffect(e3)
 end
-s.listed_names={63184228}
-s.listed_series={SET_WARRIOR,SET_SYNCHRON,SET_STARDUST}
-function s.stcon(e,tp,eg,ep,ev,re,r,rp)
+s.listed_names={62651957}
+function s.spconfilter(c)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_MACHINE) and c:IsType(TYPE_FUSION|TYPE_UNION) and c:IsFaceup()
+end
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.spconfilter,tp,LOCATION_MZONE,0,1,nil)
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local rc=c:GetReasonCard()
-	return (rc:IsSetCard(SET_WARRIOR) or rc:IsSetCard(SET_SYNCHRON) or rc:IsSetCard(SET_STARDUST)) and r & REASON_SYNCHRO == REASON_SYNCHRO
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,tp,0)
 end
-function s.sttg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and
-			Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,SET_STARDUST,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT)
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if c:IsRelateToEffect(e) then
+		Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 	end
-	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
-function s.stop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and
-			Duel.IsPlayerCanSpecialSummonMonster(tp,id+1,SET_STARDUST,TYPES_TOKEN,0,0,1,RACE_DRAGON,ATTRIBUTE_LIGHT) then
-		local token=Duel.CreateToken(tp,id+1)
-		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+function s.eqfilter(c,ec)
+	return c:IsAttribute(ATTRIBUTE_LIGHT) and c:IsRace(RACE_MACHINE) and c:IsType(TYPE_UNION)
+		and c:CheckUnionTarget(ec) and aux.CheckUnionEquip(c,ec)
+end
+function s.eqtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_SZONE)>0
+		and Duel.IsExistingMatchingCard(s.eqfilter,tp,LOCATION_DECK,0,1,nil,e:GetHandler()) end
+	Duel.SetOperationInfo(0,CATEGORY_EQUIP,nil,1,tp,LOCATION_DECK)
+end
+function s.eqop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if Duel.GetLocationCount(tp,LOCATION_SZONE)>0 and c:IsRelateToEffect(e) and c:IsFaceup() then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_EQUIP)
+		local ec=Duel.SelectMatchingCard(tp,s.eqfilter,tp,LOCATION_DECK,0,1,1,nil,c):GetFirst()
+		if ec and Duel.Equip(tp,ec,c) then
+			aux.SetUnionState(ec)
+		end
 	end
+	--Cannot Special Summon from the Extra Deck for the rest of this turn, except LIGHT monsters
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,2))
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+	e1:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e1:SetTargetRange(1,0)
+	e1:SetTarget(function(e,c) return c:IsLocation(LOCATION_EXTRA) and not c:IsAttribute(ATTRIBUTE_LIGHT) end)
+	e1:SetReset(RESET_PHASE|PHASE_END)
+	Duel.RegisterEffect(e1,tp)
+	--Clock Lizard check
+	aux.addTempLizardCheck(c,tp,function(e,c) return not c:IsOriginalAttribute(ATTRIBUTE_LIGHT) end)
 end
