@@ -24,17 +24,16 @@ function s.descon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	local g=Duel.GetMatchingGroup(Card.IsSpellTrap,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
-	if chk==0 then return c:IsDestructable() and #g>0 end
+	if chk==0 then return c:IsDestructable() end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local tc=g:Select(tp,1,1,nil):GetFirst()
+	local tc=Duel.SelectTarget(tp, Card.IsSpellTrap, tp, LOCATION_ONFIELD, LOCATION_ONFIELD, 1, 1, nil)
+    Duel.HintSelection(tc)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,c,1,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,1,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,tc,1,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if e:GetHandler():IsRelateToEffect(e) and Duel.Destroy(e:GetHandler(),REASON_EFFECT)>0 then
-		if not tc or not tc:IsRelateToEffect(e) then return end
+	if e:GetHandler():IsRelateToEffect(e) and tc and tc:IsRelateToEffect(e) and Duel.Destroy(e:GetHandler(),REASON_EFFECT)>0 then
 		Duel.BreakEffect()
 		Duel.SendtoGrave(tc,REASON_EFFECT)
 	end
