@@ -3,7 +3,7 @@
 --Substitute ID
 local s,id=GetID()
 function s.initial_effect(c)
-	--Banish 1 card from either GY
+	--Normal Summon a Winged Beast monster
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SUMMON)
@@ -24,6 +24,8 @@ function s.initial_effect(c)
 	e2:SetValue(LOCATION_REMOVED)
 	c:RegisterEffect(e2)
 end
+	--Lists "Flundereeze" archetype
+s.listed_series={SET_FLOOWANDEREEZE}
 	--Cannot special summon the turn you activate e1 or e3
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetActivityCount(tp,ACTIVITY_SPSUMMON)==0 end
@@ -46,7 +48,7 @@ function s.sumfilter(c)
 end
 	--Activation legality
 function s.nstg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_MZONE|LOCATION_GRAVE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_MZONE|LOCATION_HAND,0,1,nil) end
 end
 	--Normal summon 1 winged beast monster
 function s.nsop(e,tp,eg,ep,ev,re,r,rp)
