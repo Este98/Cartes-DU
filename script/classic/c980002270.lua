@@ -48,7 +48,7 @@ function s.sumfilter(c)
 end
 	--Activation legality
 function s.nstg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chk==0 then return Duel.IsExistingTarget(s.sumfilter,tp,LOCATION_HAND|LOCATION_MZONE,0,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(s.sumfilter,tp,LOCATION_HAND|LOCATION_MZONE,0,1,nil) end
 end
     --Normal summon 1 winged beast monster
 function s.nsop(e,tp,eg,ep,ev,re,r,rp)
