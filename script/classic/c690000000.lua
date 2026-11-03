@@ -7,23 +7,18 @@ function s.initial_effect(c)
     e1:SetDescription(aux.Stringid(id,0))
     e1:SetCategory(CATEGORY_TOGRAVE)
     e1:SetType(EFFECT_TYPE_IGNITION)
-    e1:SetRange(LOCATION_HAND)
+    e1:SetRange(LOCATION_HAND|LOCATION_MZONE)
     e1:SetCountLimit(1,id)
-    e1:SetCost(s.gycost)
+    e1:SetCost(Cost.SelfToGrave)
     e1:SetTarget(s.gytg)
     e1:SetOperation(s.gyop)
     c:RegisterEffect(e1)
 end
 s.listed_series={SET_TRI_BRIGADE}
 
-function s.gycost(e,tp,eg,ep,ev,re,r,rp,chk)
-    if chk==0 then return e:GetHandler():IsDiscardable() end
-    Duel.SendtoGrave(e:GetHandler(),REASON_COST|REASON_DISCARD)
-end
-
 function s.gyfilter(c)
     return c:IsLevelBelow(3)
-        and (c:IsRace(RACE_BEAST) or c:IsRace(RACE_BEASTWARRIOR) or c:IsRace(RACE_WINGEDBEAST))
+        and c:IsRace(RACES_BEAST_BWARRIOR_WINGB)
         and c:IsAbleToGrave()
 end
 
