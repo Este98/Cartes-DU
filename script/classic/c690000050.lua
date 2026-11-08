@@ -1,17 +1,11 @@
 --外法の騎士
 --Illegal Knight
 --Scripted by MRX
+
 local s,id=GetID()
 function s.initial_effect(c)
 	--Tribute Summon with 1 monster that mentions "Adventurer Token"
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_SUMMON_PROC)
-	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e1:SetCondition(s.ntcon)
-	e1:SetOperation(s.ntop)
-	c:RegisterEffect(e1)
+	aux.AddNormalSummonProcedure(c,true,false,1,1,SUMMON_TYPE_TRIBUTE,aux.Stringid(id,0),s.ntfilter)
 	--Change control
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -26,25 +20,11 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 s.listed_names={TOKEN_ADVENTURER}
-function s.bravecon(e,tp)
-	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,TOKEN_ADVENTURER),tp,LOCATION_ONFIELD,0,1,nil)
-end
 function s.ntfilter(c)
 	return c:IsMonster() and c:ListsCode(TOKEN_ADVENTURER)
-		and c:IsReleasable()
 end
-function s.ntcon(e,c,minc)
-	if c==nil then return true end
-	local tp=c:GetControler()
-	return minc<=1 and Duel.GetLocationCount(tp,LOCATION_MZONE)>-1
-		and Duel.IsExistingMatchingCard(s.ntfilter,tp,LOCATION_MZONE,0,1,nil)
-end
-function s.ntop(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-	local g=Duel.SelectMatchingCard(tp,s.ntfilter,tp,LOCATION_MZONE,0,1,1,nil)
-	if #g>0 then
-		Duel.Release(g,REASON_SUMMON+REASON_MATERIAL)
-	end
+function s.bravecon(e,tp)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,TOKEN_ADVENTURER),tp,LOCATION_ONFIELD,0,1,nil)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) and chkc:IsAbleToHand() end
