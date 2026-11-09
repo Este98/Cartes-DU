@@ -1,9 +1,11 @@
+--アルカナフォースⅦ－THE CHARIOT 
 --Arcana Force VII - The Chariot
+
 local s,id=GetID()
 function s.initial_effect(c)
-	--Toss a coin when this card is Summoned
+	--coin
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetDescription(aux.Stringid(34568403,0))
 	e1:SetCategory(CATEGORY_COIN)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
@@ -18,26 +20,30 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 end
 s.toss_coin=true
+
 function s.cointg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_COIN,nil,0,tp,1)
 end
+
 function s.coinop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
 	s.arcanareg(c,Arcana.TossCoin(c,tp))
 end
+
 function s.arcanareg(c,coin)
-	--Coin effects
+	--coin effect
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetDescription(aux.Stringid(34568403,1))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
-	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetCode(EVENT_BATTLE_DESTROYING)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e1:SetCode(EVENT_BATTLE_DESTROYED)
+	e1:SetRange(LOCATION_MZONE)
 	e1:SetCondition(s.spcon)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
-	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -49,14 +55,13 @@ function s.arcanareg(c,coin)
 	local e3=Effect.CreateEffect(c)
 	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e3:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-	e3:SetCode(EVENT_DESTROYED)
+	e3:SetCode(EVENT_BATTLE_DESTROYED)
 	e3:SetOperation(s.regop)
-	e3:SetReset(RESET_EVENT+RESET_TURN_SET+RESET_TEMP_REMOVE+RESET_TOHAND+RESET_TODECK)
 	c:RegisterEffect(e3)
 	local e4=Effect.CreateEffect(c)
 	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e4:SetCode(EVENT_CUSTOM+51116000)
+	e4:SetCode(EVENT_CUSTOM+id)
 	e4:SetTarget(s.spctg)
 	e4:SetOperation(s.spcop)
 	c:RegisterEffect(e4)
@@ -64,34 +69,51 @@ function s.arcanareg(c,coin)
 	Arcana.RegisterCoinResult(c,coin)
 	c:RegisterFlagEffect(51116000,0,0,1,coin)
 end
+
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	return Arcana.GetCoinResult(c)==COIN_HEADS and c:IsRelateToBattle() and c:IsStatus(STATUS_OPPO_BATTLE)
+	return Arcana.GetCoinResult(c)==COIN_HEADS
+		and eg:IsExists(function(tc)
+			return tc:IsPreviousControler(1-tp)
+				and tc:GetReasonCard()==c
+				and tc:IsReason(REASON_BATTLE)
+		end,1,nil)
 end
+
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local tc=e:GetHandler():GetBattleTarget()
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and tc:IsLocation(LOCATION_GRAVE|LOCATION_REMOVED) and tc:IsCanBeSpecialSummoned(e,0,tp,false,false) end
-	Duel.SetTargetCard(tc)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,tc,1,0,0)
-end
-function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	local tc=e:GetHandler():GetBattleTarget()
-	if tc and tc:IsRelateToEffect(e) and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
-		--It cannot attack
-		local e1=Effect.CreateEffect(c)
-		e1:SetDescription(3206)
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_CLIENT_HINT)
-		e1:SetCode(EFFECT_CANNOT_ATTACK)
-		e1:SetReset(RESET_EVENT|RESETS_STANDARD)
-		tc:RegisterEffect(e1,true)
-		--Its effects are negated
-		tc:NegateEffects(c)
+	if chk==0 then
+		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+			and eg:IsExists(function(tc)
+				return tc:IsPreviousControler(1-tp)
+					and tc:GetReasonCard()==c
+					and tc:IsReason(REASON_BATTLE)
+					and tc:IsLocation(LOCATION_GRAVE)
+					and tc:IsCanBeSpecialSummoned(e,0,tp,false,false)
+			end,1,nil)
 	end
-    Duel.SpecialSummonComplete()
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=eg:Filter(function(tc)
+		return tc:IsPreviousControler(1-tp)
+			and tc:GetReasonCard()==c
+			and tc:IsReason(REASON_BATTLE)
+			and tc:IsLocation(LOCATION_GRAVE)
+			and tc:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	end,nil)
+	local tc=g:GetFirst()
+	if tc then
+		Duel.SetTargetCard(tc)
+		Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,tc,1,0,0)
+	end
 end
+
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	local tc=Duel.GetFirstTarget()
+	if tc and tc:IsRelateToEffect(e) then
+		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
+	end
+end
+
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	--heads
@@ -103,21 +125,24 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 		c:SetFlagEffectLabel(51116000,COIN_HEADS)
 	end
 end
+
 function s.regop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:GetFlagEffectLabel(51116000)==COIN_HEADS and e:GetLabelObject():IsActivatable(tp) then
-		Duel.RaiseSingleEvent(c,EVENT_CUSTOM+51116000,e,r,rp,tp,0)
+		Duel.RaiseSingleEvent(c,EVENT_CUSTOM+id,e,r,rp,tp,0)
 	else
 		e:GetLabelObject():Reset()
 	end
 	c:ResetFlagEffect(51116000)
 	e:Reset()
 end
+
 function s.spctg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	e:Reset()
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)
 end
+
 function s.spcop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if c:IsRelateToEffect(e) then

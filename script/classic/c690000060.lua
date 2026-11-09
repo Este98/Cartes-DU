@@ -1,7 +1,8 @@
 
 --光の聖剣ダンネル
 --Dunnell, the Noble Arms of Light
---Scripted by Eerie Code
+--Scripted by MRX
+
 local s,id=GetID()
 function s.initial_effect(c)
 	c:SetUniqueOnField(1,0,id)
