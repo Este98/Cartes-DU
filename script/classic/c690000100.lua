@@ -1,14 +1,13 @@
+--アルカナフォースＸＶ－ＴＨＥ　ＤＥＶＩＬ
 --Arcana Force XV - The Fiend
---Scripted by MRX
-
+--Scripted by Hatter
 local s,id=GetID()
 function s.initial_effect(c)
 	--Add 1 "Light Barrier" to the hand
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCost(Cost.SelfDiscard)
 	e1:SetTarget(s.thtg)
@@ -32,7 +31,6 @@ function s.initial_effect(c)
 end
 s.listed_names={CARD_LIGHT_BARRIER}
 s.toss_coin=true
-
 function s.thfilter(c)
 	return c:IsCode(CARD_LIGHT_BARRIER) and c:IsAbleToHand()
 end
@@ -48,7 +46,6 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ConfirmCards(1-tp,g)
 	end
 end
-
 function s.cointg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_COIN,nil,0,tp,1)
@@ -58,9 +55,8 @@ function s.coinop(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
 	s.arcanareg(c,Arcana.TossCoin(c,tp))
 end
-
 function s.arcanareg(c,coin)
-	--Heads: Destroy 1 card on the field
+	--Destroy 1 monster on the field
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,2))
 	e1:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
@@ -74,7 +70,7 @@ function s.arcanareg(c,coin)
 	e1:SetReset(RESET_EVENT|RESETS_STANDARD)
 	c:RegisterEffect(e1)
 
-	--Tails: Destroy this card when attacked
+	--Destroy all monsters on the field
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,3))
 	e2:SetCategory(CATEGORY_DESTROY)
@@ -89,45 +85,34 @@ function s.arcanareg(c,coin)
 
 	Arcana.RegisterCoinResult(c,coin)
 end
-
 function s.descon(coin)
 	return function(e)
 		local c=e:GetHandler()
-		if Arcana.GetCoinResult(c)~=coin then return false end
-		if coin==COIN_HEADS then
-			return Duel.GetAttacker()==c or Duel.GetAttackTarget()==c
-		else
-			return Duel.GetAttackTarget()==c
-		end
+		return (Duel.GetAttacker()==c or Duel.GetAttackTarget()==c) and Arcana.GetCoinResult(c)==coin
 	end
 end
-
 function s.hdestg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() end
-	if chk==0 then
-		return Duel.IsExistingTarget(nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil)
-	end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) end
+	if chk==0 then return Duel.IsExistingTarget(nil,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,nil,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectTarget(tp,nil,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,g:GetFirst():GetControler(),500)
 end
-
 function s.hdesop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 then
+	if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 then
 		Duel.Damage(tc:GetPreviousControler(),500,REASON_EFFECT)
 	end
 end
-
 function s.tdestg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
+	local sg=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,sg,#sg,0,0)
 end
-
 function s.tdesop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) then
-		Duel.Destroy(c,REASON_EFFECT)
+	local sg=Duel.GetMatchingGroup(nil,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
+	if #sg>0 then
+		Duel.Destroy(sg,REASON_EFFECT)
 	end
 end
