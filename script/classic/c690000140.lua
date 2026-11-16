@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.desspop)
 	c:RegisterEffect(e3)
 end
-s.listed_names={CARD_DARK_MAGICIAN}
+s.listed_names={CARD_DARK_MAGICIAN,CARD_SHINING_SARCOPHAGUS}
 
 function s.dessptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
