@@ -1,4 +1,3 @@
-
 --Arcana Reading
 --Scripted by MRX
 
