@@ -21,12 +21,6 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetValue(s.atkval)
 	c:RegisterEffect(e2)
-	-- This card is always treated as "Shining Sarcophagus" (Everywhere: Deck, Hand, Field, Grave)
-    local e3=Effect.CreateEffect(c)
-    e3:SetType(EFFECT_TYPE_SINGLE)
-    e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-    e3:SetValue(CARD_SHINING_SARCOPHAGUS)
-    c:RegisterEffect(e3)
 end
 
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
